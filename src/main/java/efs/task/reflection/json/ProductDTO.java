@@ -7,15 +7,28 @@ import java.util.Date;
 /**
  * TODO: Użyj tu odpowiednich adnotacji z biblioteki Jackson
  */
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonPropertyOrder({ "ProductID", "ProductName", "ProductPrice", "DateOfProduction", "DateOfExpiry" })
 public class ProductDTO {
+    @JsonProperty("ProductID")
     private Long id;
-
+    
+    @JsonProperty("ProductName")
     private String name;
-
+    
+    @JsonProperty("ProductPrice")
     private BigDecimal price;
 
+    @JsonProperty("DateOfProduction")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss")
     private Date expiryDate;
 
+    @JsonProperty("DateOfExpiry")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date productionDate;
 
     public Long getId() {

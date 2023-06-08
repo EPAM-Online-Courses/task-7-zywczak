@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonPropertyOrder({ "ProductID", "ProductName", "ProductPrice", "DateOfProduction", "DateOfExpiry" })
 public class ProductDTO {
     @JsonProperty("ProductID")

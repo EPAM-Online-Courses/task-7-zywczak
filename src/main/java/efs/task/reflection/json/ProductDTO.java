@@ -6,9 +6,7 @@ import java.util.Date;
 /**
  * TODO: Użyj tu odpowiednich adnotacji z biblioteki Jackson
  */
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.*;
 
 @JsonPropertyOrder({ "ProductID", "ProductName", "ProductPrice", "DateOfProduction", "DateOfExpiry" })
 @JsonInclude(JsonInclude.Include.NON_EMPTY)

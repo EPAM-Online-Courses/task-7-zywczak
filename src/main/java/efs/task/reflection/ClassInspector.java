@@ -4,6 +4,12 @@ import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.Collections;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Set;
+
 public class ClassInspector {
 
   /**
@@ -15,10 +21,15 @@ public class ClassInspector {
    * @param annotation szukana adnotacja
    * @return lista zawierająca tylko unikalne nazwy pól oznaczonych adnotacją
    */
-  public static Collection<String> getAnnotatedFields(final Class<?> type,
-      final Class<? extends Annotation> annotation) {
-    //TODO usuń zawartość tej metody i umieść tutaj swoje rozwiązanie
-    return Collections.emptyList();
+  public static Collection<String> getAnnotatedFields(final Class<?> type, final Class<? extends Annotation> annotation) {
+    Set<String> annotatedFields = new HashSet<>();
+    Field[] fields = type.getDeclaredFields();
+    for (Field field : fields) {
+      if (field.isAnnotationPresent(annotation)) {
+        annotatedFields.add(field.getName());
+      }
+    }
+    return annotatedFields;
   }
 
   /**
@@ -31,8 +42,20 @@ public class ClassInspector {
    * implementowane
    */
   public static Collection<String> getAllDeclaredMethods(final Class<?> type) {
-    //TODO usuń zawartość tej metody i umieść tutaj swoje rozwiązanie
-    return Collections.emptyList();
+    Set<String> allDeclaredMethods = new HashSet<>();
+    Method[] classMethods = type.getDeclaredMethods();
+    for (Method method : classMethods) {
+      allDeclaredMethods.add(method.getName());
+    }
+
+    Class<?>[] interfaces = type.getInterfaces();
+    for (Class<?> anInterface : interfaces) {
+      Method[] interfaceMethods = anInterface.getDeclaredMethods();
+      for (Method interfaceMethod : interfaceMethods) {
+        allDeclaredMethods.add(interfaceMethod.getName());
+      }
+    }
+    return allDeclaredMethods;
   }
 
   /**
@@ -50,7 +73,22 @@ public class ClassInspector {
    * @throws Exception wyjątek spowodowany nie znalezieniem odpowiedniego konstruktora
    */
   public static <T> T createInstance(final Class<T> type, final Object... args) throws Exception {
-    //TODO usuń zawartość tej metody i umieść tutaj swoje rozwiązanie
-    return null;
+    Constructor<T>[] constructors = (Constructor<T>[]) type.getDeclaredConstructors();
+    for (Constructor<T> constructor : constructors) {
+      if (constructor.getParameterCount() == args.length) {
+        boolean isInstance = true;
+        for (int i = 0; i < args.length; i++) {
+          if (!constructor.getParameterTypes()[i].isInstance(args[i])) {
+            isInstance = false;
+            break;
+          }
+        }
+        if (isInstance) {
+          constructor.setAccessible(true);
+          return constructor.newInstance(args);
+        }
+      }
+    }
+    throw new Exception("No matching constructor found");
   }
 }

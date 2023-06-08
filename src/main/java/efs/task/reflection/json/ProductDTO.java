@@ -1,6 +1,5 @@
 package efs.task.reflection.json;
 
-
 import java.math.BigDecimal;
 import java.util.Date;
 

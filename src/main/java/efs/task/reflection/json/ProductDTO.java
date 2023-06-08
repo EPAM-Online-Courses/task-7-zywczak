@@ -28,7 +28,7 @@ public class ProductDTO {
     private Date expiryDate;
 
     @JsonProperty("DateOfExpiry")
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd@HH:mm:ss")
     private Date productionDate;
 
     public Long getId() {

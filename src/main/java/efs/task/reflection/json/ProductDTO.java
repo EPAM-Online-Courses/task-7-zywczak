@@ -22,11 +22,11 @@ public class ProductDTO {
     private BigDecimal price;
 
     @JsonProperty("DateOfProduction")
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd@HH:mm:ss")
     private Date expiryDate;
 
     @JsonProperty("DateOfExpiry")
-    @JsonFormat(pattern = "yyyy-MM-dd@HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date productionDate;
 
     public Long getId() {

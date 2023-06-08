@@ -22,13 +22,14 @@ public class ClassInspector {
    * @return lista zawierająca tylko unikalne nazwy pól oznaczonych adnotacją
    */
   public static Collection<String> getAnnotatedFields(final Class<?> type, final Class<? extends Annotation> annotation) {
-        Set<String> annotatedFields = new HashSet<>();
-        for (Field field : type.getDeclaredFields()) {
-          if (field.isAnnotationPresent(annotation)) {
-            annotatedFields.add(field.getName());
-          }
-        }
-      return annotatedFields;
+    Set<String> annotatedFields = new HashSet<>();
+    Field[] fields = type.getDeclaredFields();
+    for (Field field : fields) {
+      if (field.isAnnotationPresent(annotation)) {
+        annotatedFields.add(field.getName());
+      }
+    }
+    return annotatedFields;
   }
 
   /**
@@ -41,11 +42,20 @@ public class ClassInspector {
    * implementowane
    */
   public static Collection<String> getAllDeclaredMethods(final Class<?> type) {
-    Set<String> allMethods = new HashSet<>();
-      for (Method method : type.getDeclaredMethods()) {
-        allMethods.add(method.getName());
+    Set<String> allDeclaredMethods = new HashSet<>();
+    Method[] classMethods = type.getDeclaredMethods();
+    for (Method method : classMethods) {
+      allDeclaredMethods.add(method.getName());
+    }
+
+    Class<?>[] interfaces = type.getInterfaces();
+    for (Class<?> anInterface : interfaces) {
+      Method[] interfaceMethods = anInterface.getDeclaredMethods();
+      for (Method interfaceMethod : interfaceMethods) {
+        allDeclaredMethods.add(interfaceMethod.getName());
       }
-    return allMethods;
+    }
+    return allDeclaredMethods;
   }
 
   /**
